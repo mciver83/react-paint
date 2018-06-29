@@ -368,7 +368,8 @@ Awesome!  We can now click on a color in the color picker, and then click on the
     }
 
     return squares```
-* In the render method replace `<Square selectedColor={this.state.selectedColor} />` with ```<div style={{display: 'flex', flexWrap: 'wrap'}}>
+* In the render method replace `<Square selectedColor={this.state.selectedColor} />` with 
+```<div style={{display: 'flex', flexWrap: 'wrap'}}>
          {this.draw()}
         </div>```
 
