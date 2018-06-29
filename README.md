@@ -2,32 +2,18 @@
 
 # Project Summary
 
-In this project, we'll introduce how to use `axios` inside of a React project. We'll cover full `CRUD` in this project ( GET, PUT, POST, DELETE ) and also cover how to use .then(). Majority of the React application will already be built for you. If you're finding it hard to dive into an existing code base and understand exactly what is going on, that's perfectly normal. Try to focus only on how we're interacting with the API using `axios`.
-
-This project is also incorporating toast notifications to help visualize successful or failed API requests. Therefore when building out our `axios` requests, we will add an additional line of code for successful and failed API requests.
-
-* Success: `toast.success("Success!");`
-* Failure: `toast.error("Failed!");`
+In this project, we will create a paint app that will allow us to practice passing data from one component to a child component via props, and update a parent components state from an event on a child component.
 
 # Live Example
 
-<a href="https://devmountain.github.io/react-3-mini/">Click Me!</a>
-
-<img src="https://github.com/DevMountain/react-3-mini/blob/solution/assets/1.png" />
-
 ## Setup
 
-1.  `Fork` and `clone` this repository.
+1.  `create-react-app react-paint`.
 2.  `cd` into the project directory.
 3.  Run `npm install`.
-4.  Run `npm start`.
-5.  In a seperate terminal, `cd` into the project directory.
-
-## API Documentation
-
-https://app.swaggerhub.com/apis/DevMountain/Joes-Auto/1.0.0
-
-Please reference this API documentation when completing the project steps.
+4.  Remove service worker from `src/index.js`
+5.  Run `npm start` (you might need to run `npm install` as well).
+6.  In a seperate terminal, `cd` into the project directory.
 
 ## Step 1
 
@@ -39,11 +25,11 @@ In this step, we will create the basic structure for the components we will be u
 
 * Create a components folder inside of src.
 * Inside the components folder, create the following component files:
-    * PaiintCanvas.js
+    * PaintCanvas.js
     * ColorPicker.js
     * Square.js
 * Create a class component for Square that renders a `div` with these styles `{ height: 10, width: 10, border: '1px solid black }`
-* Create a stateless functional component from ColorPicker that, for now, will render a div with the name of the component.
+* Create a stateless functional component from ColorPicker that, for now, will render a div with 4 buttons that say 'blue', 'yellow', 'green', 'purple'.
 * Create a class component for PaintCanvas that will render both the ColorPicker component and the Square component.
 * In `src/App.js`, render the PaintCanvas component.
 
@@ -107,7 +93,12 @@ import React from 'react'
 
 export default function ColorPicker(props) {
   return (
-    <div>Color Picker</div>
+    <div>
+      <button>blue</button>
+      <button>yellow</button>
+      <button>green</button>
+      <button>purple</button>
+    </div>
   )
 }
 ```
@@ -141,29 +132,52 @@ export default class Square extends Component {
 
 ### Summary
 
-In this step, we'll make use of `axios` to get the `Increase Price` and `Decrease Price` buttons to work. When modifying/updating data on a server you always use a PUT request.
+In this step, we will be using state to keep track of the current selected color.
 
 ### Instructions
 
-* Open `./src/App.js`.
-* Locate the pre-made `updatePrice` method.
-* Using `axios` and the API documentation make a PUT request to either increase or decrease the price.
-  * If the request is successful, use `this.setState()` to update the value of `vehiclesToDisplay` and use `toast.success`.
-    * Hint: Inspect the returned data object.
-  * If the request is unsuccessful, use `toast.error`.
+* Add `constructor` method to PaintCanvas.
+    * method should call super()
+    * create initial state with the following properties:
+          - selectedColor: 'blue'
+* Create a method to update the selected color on the component's state.  Name the method `changeSelectedColor`.  The method will take in a color as a parameter and use `this.setState` to update the `selectedColor` property on state.  Rememer to bind `this`!
 
 ### Solution
 
 <details>
 
-<summary> <code> ./src/App.js ( updatePrice method ) </code> </summary>
+<summary> <code> ./src/components/PaintCnavas.js </code> </summary>
 
 ```js
-updatePrice( priceChange, id ) {
-  axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${ id }/${ priceChange }`).then( results => {
-    toast.success("Successfully updated price.");
-    this.setState({ 'vehiclesToDisplay': results.data.vehicles });
-  }).catch( () => toast.error("Failed at updating price") );
+import React, { Component } from 'react'
+import ColorPicker from './ColorPicker'
+import Square from './Square'
+
+export default class PaintCanvas extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      selectedColor: 'blue'
+    }
+
+    this.changeSelectedColor = this.changeSelectedColor.bind(this)
+  }
+
+  changeSelectedColor(color) {
+    this.setState({
+      selectedColor: color
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <ColorPicker />
+        <Square />
+      </div>
+    )
+  }
 }
 ```
 
@@ -173,37 +187,71 @@ updatePrice( priceChange, id ) {
 
 ### Summary
 
-In this step, we'll make use of `axios` to get the `Add vehicle` button to work. When creating new data on a server you should always use a POST request.
+In this step, we will make it so when we click on a color in `ColorPicker`, it will updated the `selectedColor` property on `PaintCanvas` state.
 
 ### Instructions
 
-* Open `./src/App.js`.
-* Locate the pre-made `addCar` method.
-* Using `axios` and the API documentation make a POST request to create a new vehicle.
-  * If the request is successful, use `this.setState()` to update the value of `vehiclesToDisplay` and use `toast.success`.
-    * Hint: Inspect the returned data object.
-  * If the request is unsuccessful, use `toast.error`.
+* In PaintCanvas.js, pass the `changeSelectedColor` method as a prop on `ColorPicker`.  Name the prop `handleColorClick`.
+* In ColorPicker.js, add an `onClick` event listener to each of the buttons, that takes a callback function that will invoke the handleColorClick method from the props object, and pass in the color of that button. 
 
 ### Solution
 
 <details>
 
-<summary> <code> ./src/App.js ( addCar method ) </code> </summary>
+<summary> <code> ./src/components/PaintCanvas.js </code> </summary>
 
 ```js
-addCar() {
-  let newCar = {
-    make: this.make.value,
-    model: this.model.value,
-    color: this.color.value,
-    year: this.year.value,
-    price: this.price.value
-  };
+import React, { Component } from 'react'
+import ColorPicker from './ColorPicker'
+import Square from './Square'
 
-  axios.post('https://joes-autos.herokuapp.com/api/vehicles', newCar).then( results => {
-    toast.success("Successfully added vehicle.");
-    this.setState({ vehiclesToDisplay: results.data.vehicles });
-  }).catch( () => toast.error('Failed at adding new vehicle.') );
+export default class PaintCanvas extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      selectedColor: 'blue'
+    }
+
+    this.changeSelectedColor = this.changeSelectedColor.bind(this)
+  }
+
+  changeSelectedColor(color) {
+    this.setState({
+      selectedColor: color
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <ColorPicker handleColorClick={this.changeSelectedColor}/>
+        <Square />
+      </div>
+    )
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary> <code> ./src/components/ColorPicker.js </code> </summary>
+
+```js
+import React from 'react'
+
+export default function ColorPicker(props) {
+  return (
+    <div>
+      Color Picker
+      <button onClick={() => props.handleColorClick('blue')}>blue</button>
+      <button onClick={() => props.handleColorClick('yellow')}>yellow</button>
+      <button onClick={() => props.handleColorClick('green')}>green</button>
+      <button onClick={() => props.handleColorClick('purple')}>purple</button>
+    </div>
+  )
 }
 ```
 
