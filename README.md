@@ -429,7 +429,7 @@ export default class PaintCanvas extends Component {
 
 ## Black Diamond
 
-Right now you can click on a square and it will change colors.  Now try to make it so when you click, it will change the colors of any of the squares that the mouse enters until you lift up.  A continuous painting motion.
+Make it so when you click down on the mouse, it will change the color of all of the squares that the mouse enters until you release the mouse.  A continuous painting motion.
 
 ## Contributions
 
