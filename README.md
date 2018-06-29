@@ -10,7 +10,7 @@ In this project, we will create a paint app that will allow us to practice passi
 2.  `cd` into the project directory.
 3.  Run `npm install`.
 4.  Remove service worker from `src/index.js`
-5.  Run `npm start` (you might need to run `npm install` as well).
+5.  Run `npm start`.
 6.  In a seperate terminal, `cd` into the project directory.
 
 ## Step 1
