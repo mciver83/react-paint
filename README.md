@@ -2,9 +2,7 @@
 
 # Project Summary
 
-In this project, we will create a paint app that will allow us to practice passing data from one component to a child component via props, and update a parent components state from an event on a child component.
-
-# Live Example
+In this project, we will create a paint app that will allow us to practice passing data from a parent component to a child component via props, and update a parent component's state from a child component.
 
 ## Setup
 
@@ -429,47 +427,9 @@ export default class PaintCanvas extends Component {
 
 </details>
 
-<details>
-
-<summary> <code> ./src/components/Square.js </code> </summary>
-
-```js
-import React, { Component } from 'react';
-
-export default class Square extends Component {
-  constructor() {
-    super()
-
-    this.state = {
-      backgroundColor: 'white'
-    }
-
-    this.changeBackgroundColor = this.changeBackgroundColor.bind(this)
-  }
-  changeBackgroundColor() {
-    this.setState({
-      backgroundColor: this.props.selectedColor
-    })
-  }
-
-  render() {
-    return (
-      <div style={{
-        height: 10, 
-        width: 10, 
-        border: '1px solid black',
-        background: this.state.backgroundColor
-      }} onClick={this.changeBackgroundColor}></div>
-    )
-  }
-}
-```
-
-</details>
-
 ## Black Diamond
 
-If there is extra time during the lecture, try to complete the remaining methods. The remaining methods can also be used as `axios` and `CRUD` practice on your own time.
+Right now you can click on a square and it will change colors.  Now try to make it so when you click, it will change the colors of any of the squares that the mouse enters until you lift up.  A continuous painting motion.
 
 ## Contributions
 
@@ -477,7 +437,7 @@ If you see a problem or a typo, please fork, make the necessary changes, and cre
 
 ## Copyright
 
-© DevMountain LLC, 2017. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
+© DevMountain LLC, 2018. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
 
 <p align="center">
 <img src="https://devmounta.in/img/logowhiteblue.png" width="250">
