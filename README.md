@@ -261,6 +261,101 @@ export default function ColorPicker(props) {
 
 ### Summary
 
+Awesome!  We can now click on a color, and it updates the PaintCanvas component's state.  Now we can pass this information along to the square, so when we click on it, we can change its background color the color that was selected!
+
+### Instructions
+
+* In PaintCanvas.js, pass the selectedColor to the `Square` component via props.  name the prop `selectedColor`.
+* Now, in Square.js, we need to keep track of the background color on the `Sqaure` component's state.
+   * Add the `constructor` method to the Square class.  invoke `super`, and create the state object with a property `backgroundColor`.  set the default value for `backgroundColor` to `white`.
+* lets use the background color to style the div.  Add the following to the style object on the div in the render method: `background: this.state.backgroundColor`.
+* Now we need to add an `onClick` event listener on the `div` so we can change the background color to the color that was passed to us via props.  
+   * Add a method to the `Sqaure` class called `changeBackgroundColor`.  This method should update the `backgroundColor` property on state to the selected color on props. Make sure to bind `this`.
+   * Add an `onClick` to the `div` in the render method, and give it the `changeBackgroundColor` method as the callback that will be invoked when we click on the div.
+
+### Solution
+
+<details>
+
+<summary> <code> ./src/components/PaintCanvas.js </code> </summary>
+
+```js
+import React, { Component } from 'react'
+import ColorPicker from './ColorPicker'
+import Square from './Square'
+
+export default class PaintCanvas extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      selectedColor: 'blue'
+    }
+
+    this.changeSelectedColor = this.changeSelectedColor.bind(this)
+  }
+
+  changeSelectedColor(color) {
+    this.setState({
+      selectedColor: color
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        <ColorPicker handleColorClick={this.changeSelectedColor}/>
+        <Square selectedColor={this.state.selectedColor}/>
+      </div>
+    )
+  }
+}
+```
+
+</details>
+
+<details>
+
+<summary> <code> ./src/components/Square.js </code> </summary>
+
+```js
+import React, { Component } from 'react';
+
+export default class Square extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      backgroundColor: 'white'
+    }
+
+    this.changeBackgroundColor = this.changeBackgroundColor.bind(this)
+  }
+  changeBackgroundColor() {
+    this.setState({
+      backgroundColor: this.props.selectedColor
+    })
+  }
+
+  render() {
+    return (
+      <div style={{
+        height: 10, 
+        width: 10, 
+        border: '1px solid black',
+        background: this.state.backgroundColor
+      }} onClick={this.changeBackgroundColor}></div>
+    )
+  }
+}
+```
+
+</details>
+
+## Step 5
+
+### Summary
+
 Awesome!  We can now click on a color in the color picker, and then click on the square, and it changes colors.  SO COOL!  But with only one square, this paint app is super boring.  Since we know we can reuse a component, why don't we just add 4,999 more squares so we have a total of 5,000 squares!
 
 ### Instructions
@@ -321,101 +416,6 @@ export default class PaintCanvas extends Component {
         <div style={{display: 'flex', flexWrap: 'wrap'}}>
          {this.draw()}
         </div>
-      </div>
-    )
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary> <code> ./src/components/Square.js </code> </summary>
-
-```js
-import React, { Component } from 'react';
-
-export default class Square extends Component {
-  constructor() {
-    super()
-
-    this.state = {
-      backgroundColor: 'white'
-    }
-
-    this.changeBackgroundColor = this.changeBackgroundColor.bind(this)
-  }
-  changeBackgroundColor() {
-    this.setState({
-      backgroundColor: this.props.selectedColor
-    })
-  }
-
-  render() {
-    return (
-      <div style={{
-        height: 10, 
-        width: 10, 
-        border: '1px solid black',
-        background: this.state.backgroundColor
-      }} onClick={this.changeBackgroundColor}></div>
-    )
-  }
-}
-```
-
-</details>
-
-## Step 5
-
-### Summary
-
-Awesome!  We can now click on a color, and it updates the PaintCanvas component's state.  Now we can pass this information along to the square, so when we click on it, we can change its background color the color that was selected!
-
-### Instructions
-
-* In PaintCanvas.js, pass the selectedColor to the `Square` component via props.  name the prop `selectedColor`.
-* Now, in Square.js, we need to keep track of the background color on the `Sqaure` component's state.
-   * Add the `constructor` method to the Square class.  invoke `super`, and create the state object with a property `backgroundColor`.  set the default value for `backgroundColor` to `white`.
-* lets use the background color to style the div.  Add the following to the style object on the div in the render method: `background: this.state.backgroundColor`.
-* Now we need to add an `onClick` event listener on the `div` so we can change the background color to the color that was passed to us via props.  
-   * Add a method to the `Sqaure` class called `changeBackgroundColor`.  This method should update the `backgroundColor` property on state to the selected color on props. Make sure to bind `this`.
-   * Add an `onClick` to the `div` in the render method, and give it the `changeBackgroundColor` method as the callback that will be invoked when we click on the div.
-
-### Solution
-
-<details>
-
-<summary> <code> ./src/components/PaintCanvas.js </code> </summary>
-
-```js
-import React, { Component } from 'react'
-import ColorPicker from './ColorPicker'
-import Square from './Square'
-
-export default class PaintCanvas extends Component {
-  constructor() {
-    super()
-
-    this.state = {
-      selectedColor: 'blue'
-    }
-
-    this.changeSelectedColor = this.changeSelectedColor.bind(this)
-  }
-
-  changeSelectedColor(color) {
-    this.setState({
-      selectedColor: color
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        <ColorPicker handleColorClick={this.changeSelectedColor}/>
-        <Square selectedColor={this.state.selectedColor}/>
       </div>
     )
   }
