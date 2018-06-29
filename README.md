@@ -362,16 +362,20 @@ Awesome!  We can now click on a color in the color picker, and then click on the
 
 * In PaintCanvas.js add a method called `draw`.
    * this is the logic that should go inside of `draw`:
-   ```let squares = []
+   ```
+   let squares = []
     for (var i = 0; i < 5000; i++) {
       squares.push(<Square selectedColor={this.state.selectedColor} />)
     }
 
-    return squares```
+    return squares
+    ```
 * In the render method replace `<Square selectedColor={this.state.selectedColor} />` with 
-```<div style={{display: 'flex', flexWrap: 'wrap'}}>
-         {this.draw()}
-        </div>```
+```
+<div style={{display: 'flex', flexWrap: 'wrap'}}>
+   {this.draw()}
+</div>
+```
 
 ### Solution
 
